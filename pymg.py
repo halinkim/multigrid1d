@@ -1,10 +1,11 @@
 class Multigrid:
-    def __init__(self, depth, iter, x0, x1, u0, u1, s=None):
+    def __init__(self, depth, iter, x0, x1, u0, u1, s=None, verbose=False):
         self.depth = depth
         self.N = 2 ** depth
         self.iter = iter
         self.x0 = -1
         self.x1 = 1
+        self.verbose = verbose
 
         self.num_cells = [(2 << _) for _ in range(depth)]
         self.dx = [(x1 - x0) / (2 << _) for _ in range(depth)]
@@ -82,7 +83,8 @@ class Multigrid:
             x = self.norm_residual()
             if x < 1E-15:
                 break
-            # print(x)
+            if self.verbose:
+                print(" res:", x)
 
         return self.u[-1][:]
 
